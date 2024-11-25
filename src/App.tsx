@@ -1,21 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { useState } from "react";
-import { Button, Card, Container, Form, Row, Col,Dropdown } from "react-bootstrap";
+import { Button, Card, Container, Form, Row, Col, Dropdown, Modal } from "react-bootstrap";
 
 function App() {
 
+    //Definicion del tipo para la tarea
   interface ITask {
-    title?: String;
-    description?: String;
-    date?: String;
-    isDone?: Boolean;
+    title?: string;
+    description?: string;
+    date?: string;
+    isDone?: boolean;
   }
 
   const [createTask, setCreateTask] = useState<ITask>({});
-
   const [Tasks, setTasks] = useState<ITask[]>([]);
+
+  const [Index, setIndex] = useState<number>(1)
+  const [Show, setShow] = useState(false)
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleSelectIndex = (i: number)=>{
+        setIndex(i)
+  }
 
   
   const onChangeTask = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +39,7 @@ function App() {
 
 const handleAddTask =()=>{
     //guardar objeto en arreglo
-    if(!createTask.title || !createTask.description){
+    if(!createTask.title && !createTask.description){
         console.log("campo vacio")
     }else{
         const newTask = {...createTask}
@@ -40,8 +48,9 @@ const handleAddTask =()=>{
     }
     console.log(Tasks)
 }
-const handleUpdate =(i: number, e: React.ChangeEvent<HTMLInputElement>)=>{
-  const t= {...Tasks}
+const handleUpdate =(i: number, e: React.ChangeEvent<HTMLInputElement>) =>{
+    //actualizar tarea usando index
+  const t= [...Tasks]
   const p = e.target.name as keyof ITask;
 
   t[i][p] = e.target.value as any;
@@ -49,9 +58,20 @@ const handleUpdate =(i: number, e: React.ChangeEvent<HTMLInputElement>)=>{
 }
 
 const deletetask = (i: number)=>{
-    setTasks((prevTasks) => prevTasks.filter((_, index) => index !== i));
-    
+    //borrar tarea filtrando index
+    setTasks((prevTasks) => prevTasks.filter((_, index) => index !== i));   
 }
+
+const handleCheckBox= (i: number) =>{
+    const t= [...Tasks]
+    if(!t[i].isDone){
+        t[i].isDone= true 
+    }else{
+        t[i].isDone= false
+    }
+    setTasks(t)
+}
+
 
   return (
     <Container style={{backgroundColor:"black"}}>
@@ -86,10 +106,10 @@ const deletetask = (i: number)=>{
                 Tasks.map((t, i)=>(
                     <Row key={i}>
                         <Col>
-                            <Form.Check type="checkbox" >
+                            <Form.Check type="checkbox" style={!t.isDone? {color:"black"}: {color:"green"}} >
                                 <Form.Check.Label>{t.title}</Form.Check.Label>
-                                <Form.Check.Input type="checkbox" isValid />
-                                <Form.Control.Feedback type="valid">
+                                <Form.Check.Input type="checkbox" isValid checked={t.isDone} onChange={()=>{handleCheckBox(i)}}/>
+                                <Form.Control.Feedback type="valid" style={!t.isDone? {color:"black"}: {color:"green"}}>
                                     {t.date} - {t.description}
                                 </Form.Control.Feedback>
                             </Form.Check>
@@ -100,12 +120,8 @@ const deletetask = (i: number)=>{
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    <Dropdown.Item href="#/action-1" >Editar</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-2" onClick={() =>
-                                                            setTasks((prevTasks) =>
-                                                                prevTasks.filter((_, index) => index !== i)
-                                                            )
-                                                        }>Eliminar</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-1" onClick={()=>{handleShow(); handleSelectIndex(i)}}>Editar</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-2" onClick={()=>{deletetask(i)}}>Eliminar</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Col>
@@ -117,112 +133,46 @@ const deletetask = (i: number)=>{
             </Card>
             </Col>
             </Row>
+                <Modal show={Show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Editar Tarea</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <Form>
+                        <Form.Group className="mb-3" >
+                        <Form.Label>Titulo</Form.Label>
+                        <Form.Control
+                            name="title"
+                            autoFocus
+                            value={Tasks[Index]?.title || ""}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{handleUpdate(Index, e)}}
+                        />
+                        <Form.Label>Fecha</Form.Label>
+                        <Form.Control
+                            name="date"
+                            type="date"
+                            autoFocus
+                            value={Tasks[Index]?.date || ""}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{handleUpdate(Index, e)}}
+                        />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                        <Form.Label>Descripcion</Form.Label>
+                        <Form.Control as="textarea" rows={3}
+                         name="description"
+                         value={Tasks[Index]?.description || ""}
+                         onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{handleUpdate(Index, e)}} />
+                        </Form.Group>
+                    </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="primary" onClick={handleClose}>
+                        Guardar cambios
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
         </Container>
   );
 }
 
 export default App;
-
-/* import { useState } from "react";
-import { Button, Card, Container, Form, Row, Col,Dropdown } from "react-bootstrap";
-
-export  const Task = ()=>{
-
-    const [createTask, setCreateTask] = useState({});
-
-    const [Task, setTask] = useState([]);
-
-    const onChangeTask = (e) => {
-        //crear objeto de tarea
-        const data = createTask;
-        data[e.target.name] = e.target.value;
-        data["isDone"]= false;
-        setCreateTask({ ...data })
-        console.log(createTask)
-    }
-
-    const handleAddTask =()=>{
-        //guardar objeto en arreglo
-        if(!createTask.title || !createTask.description){
-            console.log("campo vacio")
-        }else{
-            const newTask = {...createTask}
-            setTask((prevTasks) => [...prevTasks, newTask]);
-            
-        }
-        console.log(Task)
-    }
-
-    const deletetask = (i)=>{
-        setTask((prevTasks) => prevTasks.filter((_, index) => index !== i));
-    }
-
-    return (
-        <Container style={{backgroundColor:"black"}}>
-            <Row>
-            <Col md="auto">  
-            <Card style={{marginLeft: 0, width: "fit-content", textAlign:"center"}}>
-                <Card.Title>Crear Nueva Tarea</Card.Title>
-                <Card.Body>
-                <Form>
-                        <Form.Group>
-                            <Form.Label>Titulo</Form.Label>
-                            <Form.Control placeholder='Nombre de tu tarea' name="title" onChange={onChangeTask} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Descripcion</Form.Label>
-                            <Form.Control placeholder='Descripcion de tu tarea' name="description" onChange={onChangeTask} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Fecha</Form.Label>
-                            <Form.Control placeholder='Fecha de tu tarea' type="date" name="date" onChange={onChangeTask} />
-                        </Form.Group> 
-                    <Button onClick={handleAddTask}>Crear Tarea</Button>
-                </Form>
-                </Card.Body>
-            </Card>
-            </Col>
-            <Col>
-            <Card style={{width:"70%", marginRight: "0"}}>
-                <Card.Title style={{ textAlign:"center"}}>Tareas Por Hacer</Card.Title>
-                <Card.Body>
-                {
-                Task.map((t, i)=>(
-                    <Row key={i}>
-                        <Col>
-                            <Form.Check type="checkbox" >
-                                <Form.Check.Label>{t.title}</Form.Check.Label>
-                                <Form.Check.Input type="checkbox" isValid />
-                                <Form.Control.Feedback type="valid">
-                                    {t.date} - {t.description}
-                                </Form.Control.Feedback>
-                            </Form.Check>
-                        </Col>
-                        <Col>
-                            <Dropdown>
-                                <Dropdown.Toggle variant="success" id="dropdown-basic">                                
-                                </Dropdown.Toggle>
-
-                                <Dropdown.Menu>
-                                    <Dropdown.Item href="#/action-1" >Editar</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-2" onClick={() =>
-                                                            setTask((prevTasks) =>
-                                                                prevTasks.filter((_, index) => index !== i)
-                                                            )
-                                                        }>Eliminar</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </Col>
-                    </Row>    
-                ))
-                }
-                              
-                </Card.Body>
-            </Card>
-            </Col>
-            </Row>
-        </Container>
-    );
-};
-
- */
