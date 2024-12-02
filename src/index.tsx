@@ -8,6 +8,7 @@ import { createBrowserRouter } from "react-router";
 import { HomePage } from "./Pages/Homepage";
 import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
+import { Admiin } from './components/Admin';
 
 export const route = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const route = createBrowserRouter([
       path: "/register",
       element: <Register/>,
   },
+  {
+    path: "/admin",
+    element: <Admiin/>,
+},
 
 ])
 const user = {

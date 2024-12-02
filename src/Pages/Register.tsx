@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Button, Card , Form} from "react-bootstrap";
+import { Button, Card , Container, Form} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export function Register () {
@@ -29,30 +29,30 @@ export function Register () {
     }
 
     return (
-        <>
-          <Card>
+        <Container>
+          <Card className="register">
                 <Card.Body>
-                    <Card.Title>Formulario para registro de usuarios</Card.Title>
-                    <Form>
-                        <Form.Group className="mb-3">
+                    <Form className="formr">
+                        <Form.Group className="formG">
                             <Form.Label>Nombre:</Form.Label>
-                            <Form.Control onChange={onChangeRegister} name="name" placeholder="Ingresa tu nombre" />
+                            <Form.Control style={{backgroundColor: "#e9d3ff"}} onChange={onChangeRegister} name="name" placeholder="Ingresa tu nombre" />
                         </Form.Group>
-                        <Form.Group className="mb-3">
+                        <Form.Group className="formG">
                             <Form.Label>Apellidos:</Form.Label>
-                            <Form.Control onChange={onChangeRegister} name="last_name" placeholder="Ingresa tu apellido" />
+                            <Form.Control style={{backgroundColor: "#e9d3ff"}} onChange={onChangeRegister} name="last_name" placeholder="Ingresa tu apellido" />
                         </Form.Group>
-                        <Form.Group className="mb-3">
+                        <Form.Group className="formG">
                             <Form.Label>Correo:</Form.Label>
-                            <Form.Control onChange={onChangeRegister} name="email" type="email" placeholder="Ingresa tu correo" />
+                            <Form.Control style={{backgroundColor: "#e9d3ff"}} onChange={onChangeRegister} name="email" type="email" placeholder="Ingresa tu correo" />
                         </Form.Group>
-                        <Form.Group className="mb-3">
+                        <Form.Group className="formG">
                             <Form.Label>Contraseña:</Form.Label>
-                            <Form.Control onChange={onChangeRegister} name="password" type="password" placeholder="Ingresa tu contraseña" />
+                            <Form.Control style={{backgroundColor: "#e9d3ff"}} onChange={onChangeRegister} name="password" type="password" placeholder="Ingresa tu contraseña" />
                         </Form.Group>
-                        <Button onClick={() => onSubmit()}>Registrate!</Button>
+                        <Button className="boton" onClick={() => onSubmit()}>Registrate!</Button>
                     </Form>
                 </Card.Body>
-            </Card></>
+            </Card>
+        </Container>
     )
 }

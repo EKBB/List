@@ -1,32 +1,72 @@
 
 
 body {
-  background-color: #27014d;
+  background-color: #230541;
+}
+
+.container {
+  background-color: #7809e7;
+  margin-top: 100px ;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: small;
 }
 
 .createTask {
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-size: small;
-  padding: 5%;
-  margin-top: 40%;
-  border-radius: 10%;
-  width: "fit-content";
-
-  
+  width: 200px;
+  margin-left: 100px
+}
+.form-createTask {
+  padding-top: 5px;
 }
 
 .showTask {
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-size: small;
-  padding: 5%;
-  border-radius: 1%;
-  width: "fit-content";
-  margin-top: 10%;
-  align-items: center;
+  width: 600px;
+  margin-right: 125px;
+}
+.form-showTask {
+  background-color: #e9d3ff;
+  border-width: 10px;
+  margin-bottom: 10px;
+  padding: 20px;
+  padding-left: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-.form {
-  width: 90%;
-  margin: 0;
+.login {
+  margin: auto;
+  width: 700px;
+  height: 300px;
+
 }
 
+.register {
+  margin: auto;
+  width: 700px;
+  height: 400px;
+
+}
+
+.formL{
+  margin: auto;
+  width: 600px;
+
+}
+.formr{
+  margin: auto;
+  margin-top: 20px;
+  width: 600px;
+}
+.formG{
+  margin-bottom: 10px;
+  width: 600px;
+  font-style: italic;
+}
+
+.boton {
+  background-color: #7809e7;
+  margin-right: 75%;
+
+}

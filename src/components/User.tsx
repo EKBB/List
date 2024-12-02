@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from "react";
 import { Button, Card, Container, Form, Row, Col, Dropdown, Modal } from "react-bootstrap";
-import "../App.css"
+
 
 export function User() {
 
@@ -30,6 +30,7 @@ export function User() {
     //crear objeto de tarea
     let data: ITask;
     data = createTask;
+    //asignacion de tipo a las propiedades
     const p = e.target.name as keyof ITask;
     data[p] = e.target.value as any;
     data["isDone"]= false;
@@ -74,48 +75,54 @@ const handleCheckBox= (i: number) =>{
 
 
   return (
-    <Container>
+    <Container className='container'>
             <Row>
-            <Col md="auto">  
+            <Col>  
             <Card className='createTask'>
-                <Card.Title style={{ textAlign:"center"}}>Crear Nueva Tarea</Card.Title>
+                <Card.Title style={{textAlign: "center", padding: "15px"}}>Nueva Tarea</Card.Title>
                 <Card.Body>
                 <Form>
-                        <Form.Group>
+                        <Form.Group className='form-createTask'>
                             <Form.Label>Titulo</Form.Label>
-                            <Form.Control placeholder='Nombre de tu tarea' name="title" onChange={onChangeTask} />
+                            <Form.Control style={{backgroundColor:"#e9d3ff"}} placeholder='Nombre de tu tarea' name="title" onChange={onChangeTask} />
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group className='form-createTask'>
                             <Form.Label>Descripcion</Form.Label>
-                            <Form.Control placeholder='Descripcion de tu tarea' name="description" onChange={onChangeTask} />
+                            <Form.Control style={{backgroundColor:"#e9d3ff"}} placeholder='Descripcion de tu tarea' name="description" onChange={onChangeTask} />
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group className='form-createTask'>
                             <Form.Label>Fecha</Form.Label>
-                            <Form.Control placeholder='Fecha de tu tarea' type="date" name="date" onChange={onChangeTask} />
+                            <Form.Control style={{backgroundColor:"#e9d3ff"}} placeholder='Fecha de tu tarea' type="date" name="date" onChange={onChangeTask} />
                         </Form.Group> 
-                    <Button style={{ margin:0 }} variant="light" onClick={handleAddTask}>Crear Tarea</Button>
+                    <Button style={{marginTop: "10px", alignItems: "center", backgroundColor: "purple"}} onClick={handleAddTask}>Crear Tarea</Button>
                 </Form>
                 </Card.Body>
             </Card>
             </Col>
             <Col>
             <Card  className='showTask' >
-                <Card.Title style={{ textAlign:"center"}}>Tareas Por Hacer</Card.Title>
+                <Card.Title style={{textAlign: "center", padding: "15px"}} >Tareas Por Hacer</Card.Title>
                 <Card.Body>
-                <Form style={{ width: "fit-content", padding:"26px", textAlign:"center" }}>
+                <Form >
+                {
+
+                    Tasks.length === 0  && (
+                        <Card.Title style={{textAlign: "center", fontSize:"20px", opacity: 0.5}} >No hay tareas por hacer</Card.Title>
+                    )
+                }
                 {
                 Tasks.map((t, i)=>(
-                    <Row style={{ marginBottom:"10px"}} key={i}>
+                    <Row className='form-showTask' key={i}>
                         <Col>
                             <Form.Check type="checkbox" style={!t.isDone? {color:"black"}: {color:"green"}} >
                                 <Form.Check.Label>{t.title}</Form.Check.Label>
-                                <Form.Check.Input style={{ fontSize:"30px"}} type="checkbox" isValid checked={t.isDone} onChange={()=>{handleCheckBox(i)}}/>
+                                <Form.Check.Input style={{ width:"20px", height: "20px", position: 'absolute', right: "90%"}} type="checkbox" isValid checked={t.isDone} onChange={()=>{handleCheckBox(i)}}/>
                                 <Form.Control.Feedback type="valid" style={!t.isDone? {color:"black"}: {color:"green"}}>
                                     {t.date} - {t.description}
                                 </Form.Control.Feedback>
                             </Form.Check>
                         </Col>
-                        <Col>
+                        <Col style={{ width:"20px", position: 'absolute', left: "85%"}}>
                             <Dropdown>
                                 <Dropdown.Toggle variant="success" id="dropdown-basic">                                
                                 </Dropdown.Toggle>
@@ -137,20 +144,19 @@ const handleCheckBox= (i: number) =>{
             </Row>
                 <Modal show={Show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                    <Modal.Title>Editar Tarea</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                     <Form>
                         <Form.Group className="mb-3" >
                         <Form.Label>Titulo</Form.Label>
-                        <Form.Control
+                        <Form.Control style={{backgroundColor:"#e9d3ff"}}
                             name="title"
                             autoFocus
                             value={Tasks[Index]?.title || ""}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{handleUpdate(Index, e)}}
                         />
                         <Form.Label>Fecha</Form.Label>
-                        <Form.Control
+                        <Form.Control style={{backgroundColor:"#e9d3ff"}}
                             name="date"
                             type="date"
                             autoFocus
@@ -160,7 +166,7 @@ const handleCheckBox= (i: number) =>{
                         </Form.Group>
                         <Form.Group className="mb-3">
                         <Form.Label>Descripcion</Form.Label>
-                        <Form.Control as="textarea" rows={3}
+                        <Form.Control style={{backgroundColor:"#e9d3ff"}} as="textarea" rows={3}
                          name="description"
                          value={Tasks[Index]?.description || ""}
                          onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{handleUpdate(Index, e)}} />
@@ -168,7 +174,7 @@ const handleCheckBox= (i: number) =>{
                     </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button style={{backgroundColor:"purple"}} onClick={handleClose}>
                         Guardar cambios
                     </Button>
                     </Modal.Footer>

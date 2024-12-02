@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button, Card, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-
 export function Login () {
     interface ILogin {
         email?: string;
@@ -29,17 +28,17 @@ export function Login () {
 
     return (
         <Container>
-            <Card>
-                <Form>
-                    <Form.Group>
+            <Card className="login">
+                <Form className="formL">
+                    <Form.Group className="formG">
                         <Form.Label>Correo</Form.Label>
-                        <Form.Control onChange={onChangeRegister} name="email" placeholder="Ingresa tu correo electronico"/>
+                        <Form.Control style={{backgroundColor: "#e9d3ff"}} onChange={onChangeRegister} name="email" placeholder="Ingresa tu correo electronico"/>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className="formG">
                         <Form.Label>Contraseña</Form.Label>
-                        <Form.Control onChange={onChangeRegister} name="password" placeholder="Ingresa tu contraseña"/>
-                    </Form.Group>
-                    <Button href="/homepage" onClick={()=> onSubmit()}>Ingresar</Button>
+                        <Form.Control style={{backgroundColor: "#e9d3ff"}} onChange={onChangeRegister} name="password" placeholder="Ingresa tu contraseña"/>
+                    </Form.Group >
+                    <Button className="boton" href="/homepage" onClick={()=> onSubmit()}>Ingresar</Button>
                     <Card.Link href="/register">Registrarse</Card.Link>
                 </Form>
             </Card>
