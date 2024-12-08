@@ -71,6 +71,18 @@ const sendData = async () => {
     }
 }
 
+const UpTask = async () =>{
+    try {
+        const task = [...Tasks]
+        const taskToUpdate = task[Index] as any
+        await axios("http://localhost:4000/tasks/update", taskToUpdate)
+        getTasks()
+    } catch (error) {
+        console.log(error)
+        alert("Hubo un error al actualizar la tarea")
+    }
+}
+
 const onChangeUpdateTask = async (i: number, e: React.ChangeEvent<HTMLInputElement>) =>{
     //actualizar tarea usando index
   const t= [...Tasks] as any
@@ -80,16 +92,19 @@ const onChangeUpdateTask = async (i: number, e: React.ChangeEvent<HTMLInputEleme
   setTasks(t)
 }
 
-const UpdateTask = async () =>{
+const updateTask = async () =>{
     //actualizar tarea en la base de datos
     try {
-        const updatedTask = Tasks[Index]
+        const task = [...Tasks]
+        const updatedTask = task[Index] as any
          if(!updatedTask.title && !updatedTask.description){
-           return alert("Titulo o descripcion no pueden estar vacios")
+           alert("Titulo o descripcion no pueden estar vacios")
+           return
         }
         await axios.put("http://localhost:4000/tasks/update", updatedTask)
         getTasks()
-        
+        console.log("se actualizo")
+        return
     } catch (error) {
          console.log(error)
         alert("Hubo un error al actualizar la tarea")
@@ -120,7 +135,7 @@ const handleCheckBox= async (i: number) =>{
             t[i].isChecked= false
         }
         setTasks(t)
-        await axios.put("http://localhost:4000/tasks/update", t)
+        await axios.put("http://localhost:4000/tasks/update", t[i])
         getTasks()
         
     } catch (error) {
@@ -229,7 +244,7 @@ const handleCheckBox= async (i: number) =>{
                     </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                    <Button style={{backgroundColor:"purple"}} onClick={()=>{handleClose()}}>
+                    <Button style={{backgroundColor:"purple"}} onClick={ updateTask}>
                         Guardar cambios
                     </Button>
                     </Modal.Footer>
