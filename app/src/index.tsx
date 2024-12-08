@@ -9,6 +9,7 @@ import { HomePage } from "./Pages/Homepage";
 import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
 import { Admiin } from './components/Admin';
+import { Header } from './components/Header';
 
 export const route = createBrowserRouter([
   {
@@ -29,19 +30,21 @@ export const route = createBrowserRouter([
 },
 
 ])
-const user = {
-  name:"Jesus",
-  logined:true,
-  rol:"client"
-};
-localStorage.user = JSON.stringify(user);
+const user = localStorage.user ? JSON.parse(localStorage.user) : undefined;
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
+    <>
+      {
+          user?.logined == true && (
+            <Header />
+          )
+      } 
    <RouterProvider router={route}/>
+    </>
   </React.StrictMode>
 );
 

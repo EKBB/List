@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import { registerUsers, singin } from "./controllers/UserControler";
-import { registerTask, searchTask } from "./controllers/TaskController";
+import { deleteTask, getMetrics, getTask, registerTask, updatetask } from "./controllers/TaskController";
 
 
 
@@ -20,9 +20,12 @@ app.get("/", (_req: Request, res: Response) => {
 app.post("/users/create",registerUsers)
 app.post("/users/login",singin)
 
-//QUESTIONARIO
+//Tareas
 app.post("/tasks/create", registerTask)
-app.post("/tasks/search", searchTask)
+app.get("/tasks/getTasks/:userId", getTask)
+app.get("/tasks/getMetrics", getMetrics)
+app.put("/tasks/update", updatetask)
+app.delete("/tasks/delete/:taskId", deleteTask)
 
 
 

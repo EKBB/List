@@ -9,8 +9,8 @@ export interface IUser {
 }
 
 export interface ITasks {
-    title: String;
-    description: String;
+    title?: String;
+    description?: String;
     isChecked: Boolean;
     date?: String;    
     userId: Schema.Types.ObjectId | String;

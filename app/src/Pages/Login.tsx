@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, Card, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"
 
 export function Login () {
     interface ILogin {
@@ -12,17 +13,28 @@ export function Login () {
     const navigate = useNavigate();
 
     const onChangeRegister = (e: React.ChangeEvent<HTMLInputElement>)=>{
-        let data: ILogin;
-        data = User;
-        const p = e.target.name as keyof ILogin;
-        data[p] = e.target.value as any;
+        const data = User as any;
+        const p = e.target.name;
+        data[p] = e.target.value;
         setUser({ ...data })
     }
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         /* Enviar data al server */
-        console.log(User)
-        navigate("/homepage")
+        try {
+            const res = await axios.post("http://localhost:4000/users/login", User) 
+             navigate("/list-q")
+            const user = res.data.user;
+            user.logined= true; 
+
+            localStorage.user = JSON.stringify(user)
+            navigate("/homepage")
+
+             alert("Inicio de sesion Correcto")
+          } catch (error) {
+             alert("Usuario o Contraseña incorrecta")
+          }
+          console.log(User)
     }
 
 

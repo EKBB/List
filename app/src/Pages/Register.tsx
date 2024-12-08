@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Button, Card , Container, Form} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"
 
 export function Register () {
 
@@ -9,23 +10,35 @@ export function Register () {
         email?: string;
         lastName?: string;
         password?: string;
+        rol?: string
     }
 
     const [User, setUser] = useState<IUser>({})
     const navigate = useNavigate();
 
     const onChangeRegister = (e: React.ChangeEvent<HTMLInputElement>)=>{
-        let data: IUser;
-        data = User;
-        const p = e.target.name as keyof IUser;
-        data[p] = e.target.value as any;
+        
+        const data = User as any;
+        const p = e.target.name;
+        data[p] = e.target.value;
         setUser({ ...data })
     }
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         /* Enviar data al server */
+        try {
+            if (!User.name || !User.lastName || !User.email || !User.password) {
+                alert("Todos los campos son requeridos");
+                return;
+            }
+           User.rol="client"
+           const res= await axios.post("http://localhost:4000/users/create", User) 
+           console.log("Pasa",User, res)
+           navigate("/")
+        } catch (error) {
+           alert("Ocurrio un error")
+        }
         console.log(User)
-        navigate("/")
     }
 
     return (
@@ -39,7 +52,7 @@ export function Register () {
                         </Form.Group>
                         <Form.Group className="formG">
                             <Form.Label>Apellidos:</Form.Label>
-                            <Form.Control style={{backgroundColor: "#e9d3ff"}} onChange={onChangeRegister} name="last_name" placeholder="Ingresa tu apellido" />
+                            <Form.Control style={{backgroundColor: "#e9d3ff"}} onChange={onChangeRegister} name="lastName" placeholder="Ingresa tu apellido" />
                         </Form.Group>
                         <Form.Group className="formG">
                             <Form.Label>Correo:</Form.Label>

@@ -5,7 +5,7 @@ import '../App.css';
 
 
 export function HomePage() {
-    const user = JSON.parse(localStorage.user);
+    const user = localStorage.user ? JSON.parse(localStorage.user) : undefined;
 
   return(
     <Container>
