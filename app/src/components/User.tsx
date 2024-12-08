@@ -143,7 +143,22 @@ const handleCheckBox= async (i: number) =>{
     }
     }
     
-    
+const ExpiredDate = (i: number): boolean=>{
+
+    let taskDate= Tasks[i].date
+    if(!taskDate){
+        return false
+    }
+ 
+    const today = new Date().toISOString().split("T")[0];
+
+    if(today > taskDate){
+        return true
+    }
+    return false
+
+}
+
   return (
     <Container className='container'>
             <Row>
@@ -161,8 +176,8 @@ const handleCheckBox= async (i: number) =>{
                             <Form.Control style={{backgroundColor:"#e9d3ff"}} placeholder='Descripcion de tu tarea' name="description" onChange={onChangeTask} />
                         </Form.Group>
                         <Form.Group className='form-createTask'>
-                            <Form.Label>Fecha</Form.Label>
-                            <Form.Control style={{backgroundColor:"#e9d3ff"}} placeholder='Fecha de tu tarea' type="date" name="date" onChange={onChangeTask} />
+                            <Form.Label>Fecha de Vencimiento</Form.Label>
+                            <Form.Control style={{backgroundColor:"#e9d3ff"}} placeholder='Fecha de vencimiento' type="date" name="date" onChange={onChangeTask} />
                         </Form.Group> 
                     <Button style={{marginTop: "10px", alignItems: "center", backgroundColor: "purple"}} onClick={sendData}>Crear Tarea</Button>
                 </Form>
@@ -184,10 +199,10 @@ const handleCheckBox= async (i: number) =>{
                 Tasks.map((t, i)=>(
                     <Row className='form-showTask' key={i}>
                         <Col>
-                            <Form.Check type="checkbox" style={!t.isChecked? {color:"black"}: {color:"green"}} >
+                            <Form.Check type="checkbox" style={t.isChecked?  {color:"green"}: ExpiredDate(i) ? {color:"red"}: {color:"black"}} >
                                 <Form.Check.Label>{t.title}</Form.Check.Label>
                                 <Form.Check.Input style={{ width:"20px", height: "20px", position: 'absolute', right: "90%"}} type="checkbox" isValid checked={t.isChecked} onChange={()=>{handleCheckBox(i)}}/>
-                                <Form.Control.Feedback type="valid" style={!t.isChecked? {color:"black"}: {color:"green"}}>
+                                <Form.Control.Feedback type="valid"style={t.isChecked?  {color:"green"}: ExpiredDate(i) ? {color:"red"}: {color:"black"}}>
                                     {t.date} - {t.description}
                                 </Form.Control.Feedback>
                             </Form.Check>
@@ -225,7 +240,7 @@ const handleCheckBox= async (i: number) =>{
                             value={Tasks[Index]?.title || ""}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{onChangeUpdateTask(Index, e)}}
                         />
-                        <Form.Label>Fecha</Form.Label>
+                        <Form.Label>Fecha de Vencimiento</Form.Label>
                         <Form.Control style={{backgroundColor:"#e9d3ff"}}
                             name="date"
                             type="date"
